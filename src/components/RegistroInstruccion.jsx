@@ -6,8 +6,8 @@ export default function RegistroInstruccion({
   registerOperand,
 }) {
   const gridTemplateColumns = `repeat(${pw}, 1fr)`;
-  console.log(registerDirecc, "DIRECCION");
-  console.log(registerOperand, "OPERANDO");
+  //console.log(registerDirecc, "DIRECCION");
+  //console.log(registerOperand, "OPERANDO");
   return (
     <div
       className={`relative w-[80%] h-[50px] text-xl border-black border-2   grid-rows-1 items-center  text-center`}

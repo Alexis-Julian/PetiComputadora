@@ -3,6 +3,10 @@ import RegistroInstruccion from "./components/RegistroInstruccion";
 import MemoriaPrincipal from "./components/MemoriaPrincipal";
 import Acumulador from "./components/Acumulador";
 import ContadorPrograma from "./components/ContadorPrograma";
+import Code from "./components/Code";
+import { instSet } from "./shared/const";
+import { getInst, getOp, dec2bin, isLetter } from "./helpers/InstruccionParser";
+
 function App() {
   /* const [useCode, setCode] = useState([
     "STR 31",
@@ -55,9 +59,7 @@ function App() {
   );
 
   /* REGISTRO DE PROGRAM COUNTER */
-  const [useCounterProgramReg, setCounterProgramReg] = useState(
-    new Array(useDireccionamiento).fill("0")
-  );
+  const [useCounterProgramReg, setCounterProgramReg] = useState(0);
 
   /* IMPRIMIR EN PANTALLA  */
   const [usePrint, setPrint] = useState();
@@ -93,50 +95,6 @@ function App() {
     let ri = "";
     let acum = 0;
 
-    // Conjunto de Instrucciones
-    const instSet = {
-      STP: "000",
-      ADD: "001",
-      SUB: "010",
-      STR: "011",
-      JUP: "100",
-      JUN: "101",
-      JUI: "110",
-      WRT: "111",
-    };
-
-    // Ejecutar instrucción
-    /* function evalExec(inst, i, op) {
-    switch (inst) {
-      case "STP":
-        break;
-      case "ADD":
-        acum = acum + parseInt(mem[op]);
-        break;
-      case "SUB":
-        acum = acum - parseInt(mem[op]);
-        break;
-      case "STR":
-        mem[op] = acum;
-        break;
-      case "JUP":
-        if (Math.sign(acum) >= 1) i = op - 1;
-        break;
-      case "JUN":
-        if (Math.sign(acum) < 0) i = op - 1;
-        break;
-      case "JUI":
-        i = op - 1;
-        break;
-      case "WRT":
-        console.log("DISPLAY: " + acum);
-        break;
-      default:
-        console.log("Instrucción inválida");
-        break;
-    }
-  } */
-
     const code = [
       "STR 31",
       "SUB 31",
@@ -155,16 +113,6 @@ function App() {
       "23",
     ];
 
-    // Init
-    /* console.log("Mini Emulador");
-  console.log(`Computadora: ${name}`);
-  console.log(`Set de Instrucción: ${2 ** set}`);
-  console.log(`Capacidad de direccionamiento: ${k}`);
-  console.log(`Tamaño Máx. de Memoria: ${tmm}`);
-   */
-    // Compile Code and Load to Memory
-    /* console.log("Compilando..."); */
-
     let op;
     let probando = [];
     for (let i = 0; i < code.length; i++) {
@@ -179,14 +127,17 @@ function App() {
       }
 
       mem[i] = instSet[inst] + dec2bin(op);
-      console.log(`${code[i]} => ${mem[i]}`);
+      //console.log(`${code[i]} => ${mem[i]}`);
     }
 
     // Run Code
     // console.log("Ejecutando...");
     for (let i = 0; i < code.length; i++) {
       ri = mem[i];
+
       pc = i + 1;
+      setCounterProgramReg(i + 1);
+
       let inst = getInst(code[i]);
       op = getOp(code[i]);
 
@@ -230,24 +181,6 @@ function App() {
       }
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
-
-    function getInst(s) {
-      return s.substring(0, 3);
-    }
-
-    function getOp(s) {
-      return parseInt(s.substring(4));
-    }
-
-    function dec2bin(v) {
-      let n = v.toString(2);
-      let z = "0".repeat(kb);
-      return z.substring(n.length) + n;
-    }
-
-    function isLetter(c) {
-      return c.toLowerCase() != c.toUpperCase();
-    }
   }
 
   /* ACA VAMOS A USAR DIRECCIONAMIENTO */
@@ -276,101 +209,6 @@ function App() {
       console.log(error);
     }
   }, [useCodigoOperando]); */
-
-  const MenuConfig = () => {
-    const codigo = new Array(16).fill("");
-
-    return (
-      <section className="p-2 size-full grid grid-rows-[0.1fr_1fr_0.2fr]">
-        <h3 className=" bg-blue-50 rounded-md text-center text-2xl flex items-center justify-center">
-          <p>ASSEMBLY</p>
-        </h3>
-
-        <ul className="flex flex-col gap-2 items-center p-2 overflow-y-auto">
-          {codigo.map((e) => {
-            return (
-              <li className="w-full flex gap-1">
-                <input
-                  className="outline-none w-[80%]"
-                  type="text"
-                  name=""
-                  id=""
-                />
-                <input className="outline-none h-[40px]" type="text" />
-              </li>
-            );
-          })}
-        </ul>
-
-        <div className=" bg-blue-50 rounded-md">BOTONES</div>
-      </section>
-    );
-  };
-
-  const ChangePComputer = () => {
-    return (
-      <div className="border-black border-[1px] h-full rounded-sm">
-        <form className="w-full h-full grid grid-cols-3 grid-rows-2 items-center px-1">
-          <label
-            htmlFor=""
-            className="text-lg font-semibold border-b-2 w-[95%] border-black"
-          >
-            SET :
-            <input
-              type="number"
-              className="outline-none pl-1"
-              defaultValue={useCodigoOperando}
-            />
-          </label>
-          <label
-            htmlFor=""
-            className="text-lg font-semibold border-b-2 w-[95%] border-black "
-          >
-            PALABRA LOGICA :
-            <input
-              type="number"
-              readOnly
-              value={usePalabraLogica}
-              className="outline-none pl-1 cursor-default"
-            />
-          </label>
-          <label
-            htmlFor=""
-            className="text-lg font-semibold border-b-2 w-[95%] border-black"
-          >
-            TMM :
-            <input
-              type="text"
-              readOnly
-              className="outline-none pl-1"
-              value={TAMANO_MAXIMO}
-            />
-          </label>
-          <label
-            htmlFor=""
-            className="text-lg font-semibold border-b-2 w-[95%] border-black"
-          >
-            K :
-            <input
-              type="number"
-              value={useDireccionamiento}
-              onChange={(e) => setDireccionamiento(e.target.value)}
-              className="outline-none pl-1"
-              autoFocus
-            />
-          </label>
-          <div className="col-start-3 col-end-4 row-start-1 row-end-3 size-full p-2 ">
-            <button
-              className=" text-center bg-black/50 size-full text-white rounded-md hover:bg-black transition-all"
-              onClick={() => setMenuActive(!useMenuActive)}
-            >
-              CONFIGURACION
-            </button>
-          </div>
-        </form>
-      </div>
-    );
-  };
 
   return (
     <div className="h-screen w-screen gap-2  overflow-scroll grid grid-rows-[0.2fr_1fr]  grid-cols-[1fr_0.2fr]  p-2      font-poppins  ">
@@ -439,7 +277,7 @@ function App() {
         </div>
       </section>
       <section className=" bg-gray-50 col-start-2 col-end-3 row-start-1 row-end-3  ">
-        <MenuConfig />
+        <Code counterProgram={useCounterProgramReg} />
       </section>
     </div>
   );
