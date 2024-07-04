@@ -1,6 +1,6 @@
-export default function Acumulador() {
+export default function Acumulador({ acum }) {
   const gridTemplateColumns = `repeat(8, 1fr)`;
-  const campoAcumulador = new Array(8).fill("0");
+
   return (
     <div
       className={`relative w-[80%] h-[50px] text-xl border-black border-2   grid-rows-1 items-center  text-center`}
@@ -22,7 +22,7 @@ export default function Acumulador() {
       </div>
 
       {/* CONTADOR DE PROGRAMA */}
-      {campoAcumulador.map((e, index) => {
+      {acum.map((e, index) => {
         return (
           <i key={index} className="">
             {e}

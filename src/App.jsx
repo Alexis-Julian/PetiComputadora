@@ -3,8 +3,25 @@ import RegistroInstruccion from "./components/RegistroInstruccion";
 import MemoriaPrincipal from "./components/MemoriaPrincipal";
 import Acumulador from "./components/Acumulador";
 import ContadorPrograma from "./components/ContadorPrograma";
-
 function App() {
+  /* const [useCode, setCode] = useState([
+    "STR 31",
+    "SUB 31",
+    "ADD 13",
+    "JUP 05",
+    "ADD 13",
+    "ADD 14",
+    "WRT 0",
+    "STP 0",
+    "WRT 0",
+    "STP 0",
+    "100",
+    "123",
+    "124",
+    "11",
+    "23",
+  ]); */
+  const BITSDEMEMORIA = 8;
   /* INSTRUCCIONES */
   const [useMenuActive, setMenuActive] = useState(false);
 
@@ -23,13 +40,27 @@ function App() {
   const [useTMM, setTMM] = useState([]);
 
   /* REGISTRO DE OPERANDO */
-  const [useCodigoOperandoReg, setCodigoOperandoReg] = useState([]);
+  const [useCodigoOperandoReg, setCodigoOperandoReg] = useState(
+    new Array(useCodigoOperando).fill("0")
+  );
+
   /* REGISTRO DE DIRRECCION */
-  const [usetDireccioReg, setDireccioReg] = useState([]);
+  const [usetDireccioReg, setDireccioReg] = useState(
+    new Array(useDireccionamiento).fill("0")
+  );
+
   /* REGISTRO DE ACUMULADOR  */
-  const [useAcumuladorReg, setAcumuladorReg] = useState([]);
+  const [useAcumuladorReg, setAcumuladorReg] = useState(
+    new Array(BITSDEMEMORIA).fill("0")
+  );
+
   /* REGISTRO DE PROGRAM COUNTER */
-  const [useCounterProgramReg, setCounterProgramReg] = useState([]);
+  const [useCounterProgramReg, setCounterProgramReg] = useState(
+    new Array(useDireccionamiento).fill("0")
+  );
+
+  /* IMPRIMIR EN PANTALLA  */
+  const [usePrint, setPrint] = useState();
 
   const TAMANO_MAXIMO =
     String(2 ** useDireccionamiento * usePalabraLogica) + " Bytes";
@@ -37,6 +68,187 @@ function App() {
   //Generra nuevvos campos de acumulador ESTO NO VA ACA
   /*  const camposAcumulador = new Array(8).fill("0");
   setAcumuladorReg(camposAcumulador); */
+
+  async function Probando() {
+    /* let mem = mem;
+  let pc = pc;
+  let ri = ri;
+  let acum = acum;
+  
+  let instSet = instSet; */
+
+    // Configuración
+    let name = "Peti";
+    let set = 3;
+    let kb = 5;
+    let k = 2 ** kb;
+
+    // Memoria
+    let tmm = k * (set + kb);
+    let maxMemAdr = k - 1;
+    let mem = new Array(tmm).fill(0); // Inicializa la memoria con ceros
+
+    // Registros
+    let pc = 0;
+    let ri = "";
+    let acum = 0;
+
+    // Conjunto de Instrucciones
+    const instSet = {
+      STP: "000",
+      ADD: "001",
+      SUB: "010",
+      STR: "011",
+      JUP: "100",
+      JUN: "101",
+      JUI: "110",
+      WRT: "111",
+    };
+
+    // Ejecutar instrucción
+    /* function evalExec(inst, i, op) {
+    switch (inst) {
+      case "STP":
+        break;
+      case "ADD":
+        acum = acum + parseInt(mem[op]);
+        break;
+      case "SUB":
+        acum = acum - parseInt(mem[op]);
+        break;
+      case "STR":
+        mem[op] = acum;
+        break;
+      case "JUP":
+        if (Math.sign(acum) >= 1) i = op - 1;
+        break;
+      case "JUN":
+        if (Math.sign(acum) < 0) i = op - 1;
+        break;
+      case "JUI":
+        i = op - 1;
+        break;
+      case "WRT":
+        console.log("DISPLAY: " + acum);
+        break;
+      default:
+        console.log("Instrucción inválida");
+        break;
+    }
+  } */
+
+    const code = [
+      "STR 31",
+      "SUB 31",
+      "ADD 13",
+      "JUP 05",
+      "ADD 13",
+      "ADD 14",
+      "WRT 0",
+      "STP 0",
+      "WRT 0",
+      "STP 0",
+      "100",
+      "123",
+      "124",
+      "11",
+      "23",
+    ];
+
+    // Init
+    /* console.log("Mini Emulador");
+  console.log(`Computadora: ${name}`);
+  console.log(`Set de Instrucción: ${2 ** set}`);
+  console.log(`Capacidad de direccionamiento: ${k}`);
+  console.log(`Tamaño Máx. de Memoria: ${tmm}`);
+   */
+    // Compile Code and Load to Memory
+    /* console.log("Compilando..."); */
+
+    let op;
+    let probando = [];
+    for (let i = 0; i < code.length; i++) {
+      if (code[i].length == 0) continue;
+      let inst = getInst(code[i]);
+
+      if (!isLetter(code[i].substring(1))) {
+        inst = "STP";
+        op = code[i];
+      } else {
+        op = getOp(code[i]);
+      }
+
+      mem[i] = instSet[inst] + dec2bin(op);
+      console.log(`${code[i]} => ${mem[i]}`);
+    }
+
+    // Run Code
+    // console.log("Ejecutando...");
+    for (let i = 0; i < code.length; i++) {
+      ri = mem[i];
+      pc = i + 1;
+      let inst = getInst(code[i]);
+      op = getOp(code[i]);
+
+      setCodigoOperandoReg(ri.split("").splice(0, 3));
+      setDireccioReg(ri.split("").splice(3));
+
+      /* CONVERTIR ACUMULADOR A BINARIO  */
+      let binaryString = acum.toString(2);
+      let paddedBinaryString = binaryString.padStart(8, "0");
+
+      setAcumuladorReg(paddedBinaryString.split(""));
+
+      console.log(`MA: ${i} | RI: ${ri} | PC: ${pc} | ACUM: ${acum}`);
+      switch (inst) {
+        case "STP":
+          break;
+        case "ADD":
+          acum = acum + parseInt(mem[op]);
+          break;
+        case "SUB":
+          acum = acum - parseInt(mem[op]);
+          break;
+        case "STR":
+          mem[op] = acum;
+          break;
+        case "JUP":
+          if (Math.sign(acum) >= 1) i = op - 1;
+          break;
+        case "JUN":
+          if (Math.sign(acum) < 0) i = op - 1;
+          break;
+        case "JUI":
+          i = op - 1;
+          break;
+        case "WRT":
+          setPrint(acum);
+          break;
+        default:
+          console.log("Instrucción inválida");
+          break;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+
+    function getInst(s) {
+      return s.substring(0, 3);
+    }
+
+    function getOp(s) {
+      return parseInt(s.substring(4));
+    }
+
+    function dec2bin(v) {
+      let n = v.toString(2);
+      let z = "0".repeat(kb);
+      return z.substring(n.length) + n;
+    }
+
+    function isLetter(c) {
+      return c.toLowerCase() != c.toUpperCase();
+    }
+  }
 
   /* ACA VAMOS A USAR DIRECCIONAMIENTO */
 
@@ -46,15 +258,14 @@ function App() {
     const resultado = 2 ** useDireccionamiento;
     const memoriaArray = new Array(resultado).fill("00000000");
     setTMM(memoriaArray);
+  }, []);
 
-    //Genera nuevos campos de direccionamiento
-    const camposDirecccionamiento = new Array(useDireccionamiento).fill("0");
-    setDireccioReg(camposDirecccionamiento);
-    console.log(camposDirecccionamiento);
-    //Genera nuevos campos de counterProgram
-    const camposCounterProgram = new Array(useDireccionamiento).fill("0");
-    setCounterProgramReg(camposCounterProgram);
-  }, [useDireccionamiento]);
+  useEffect(() => {
+    const Asyncroia = async () => {
+      await Probando();
+    };
+    Asyncroia();
+  }, []);
 
   /*  */
   /* useEffect(() => {
@@ -68,7 +279,7 @@ function App() {
 
   const MenuConfig = () => {
     const codigo = new Array(16).fill("");
-    console.log(codigo);
+
     return (
       <section className="p-2 size-full grid grid-rows-[0.1fr_1fr_0.2fr]">
         <h3 className=" bg-blue-50 rounded-md text-center text-2xl flex items-center justify-center">
@@ -190,11 +401,13 @@ function App() {
               k={useDireccionamiento}
               pw={usePalabraLogica}
               set={useCodigoOperando}
+              registerDirecc={usetDireccioReg}
+              registerOperand={useCodigoOperandoReg}
             />
           </div>
           {/* REGISTRO ACUMULADOR */}
           <div className="w-full  flex items-center justify-center">
-            <Acumulador />
+            <Acumulador acum={useAcumuladorReg} />
           </div>
 
           <div className="w-full  flex items-center justify-center">
@@ -218,7 +431,7 @@ function App() {
           </section>
           <div className="bg-transparent"></div>
           <section className="relative rounded-sm bg-blue-50  text-center flex items-center justify-center text-2xl">
-            <p>5</p>
+            <p>{usePrint ? usePrint : "Sin vista"}</p>
             <p className="absolute top-0 left-0 text-black/50 text-sm ">
               Pantalla
             </p>

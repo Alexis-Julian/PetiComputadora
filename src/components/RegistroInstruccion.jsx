@@ -1,9 +1,13 @@
-export default function RegistroInstruccion({ k, pw, set }) {
+export default function RegistroInstruccion({
+  k,
+  pw,
+  set,
+  registerDirecc,
+  registerOperand,
+}) {
   const gridTemplateColumns = `repeat(${pw}, 1fr)`;
-
-  const camposDirecccionamiento = new Array(k).fill("0");
-  const camposOperando = new Array(set).fill("0");
-  //console.log(gridTemplateColumns);
+  console.log(registerDirecc, "DIRECCION");
+  console.log(registerOperand, "OPERANDO");
   return (
     <div
       className={`relative w-[80%] h-[50px] text-xl border-black border-2   grid-rows-1 items-center  text-center`}
@@ -24,7 +28,7 @@ export default function RegistroInstruccion({ k, pw, set }) {
       </div>
 
       {/* CODIGO DE OPERANDO */}
-      {camposOperando.map((e, index) => {
+      {registerOperand.map((e, index) => {
         return (
           <i key={index} className="">
             {e}
@@ -48,7 +52,7 @@ export default function RegistroInstruccion({ k, pw, set }) {
       </div>
 
       {/* CODIGO DE DIRECCIONAMIENTO */}
-      {camposDirecccionamiento.map((e, index) => {
+      {registerDirecc.map((e, index) => {
         return (
           <i key={index} className="">
             {e}
