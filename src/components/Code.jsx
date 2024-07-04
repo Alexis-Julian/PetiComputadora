@@ -1,27 +1,14 @@
 import { getInst, getOp, isLetter } from "../helpers/InstruccionParser";
+import { CiPlay1 } from "react-icons/ci";
+import { IoPlayBackOutline } from "react-icons/io5";
+import { IoPlayForwardOutline } from "react-icons/io5";
+import { IoIosPause } from "react-icons/io";
+import { IoPlay } from "react-icons/io5";
+import { MdOutlineReplay } from "react-icons/md";
 
 function Instruccion(registro) {}
 
-export default function Code({ counterProgram }) {
-  const codigo = new Array(16).fill("");
-  const test = [
-    "STR 31",
-    "SUB 31",
-    "ADD 13",
-    "JUP 05",
-    "ADD 13",
-    "ADD 14",
-    "WRT 0",
-    "STP 0",
-    "WRT 0",
-    "STP 0",
-    "100",
-    "123",
-    "124",
-    "11",
-    "23",
-  ];
-
+export default function Code({ counterProgram, setCounterProgram, code }) {
   return (
     <section className="p-2 size-full grid grid-rows-[0.1fr_1fr_0.1fr] ">
       <h3 className=" border-b-[1px] border-b-black/5  text-center text-2xl flex items-center justify-center">
@@ -29,7 +16,7 @@ export default function Code({ counterProgram }) {
       </h3>
 
       <ul className="flex flex-col gap-2 items-center p-2 overflow-y-auto">
-        {test.map((reg, index) => {
+        {code.map((reg, index) => {
           let inst = getInst(reg);
 
           const op = getOp(reg);
@@ -64,7 +51,24 @@ export default function Code({ counterProgram }) {
       </ul>
 
       <div className="border-t-[1px] border-t-black/5 ">
-        <ul></ul>
+        <form className="size-full grid grid-cols-5  place-items-center [&>*:nth-child(n)]:flex [&>*:nth-child(n)]:justify-center  ">
+          <button className="w-[70%] h-[40%] items-center bg-blue-400 text-white text-sm rounded-md hover:scale-95 transition-all">
+            <IoPlay />
+          </button>
+          <button className="w-[70%] h-[40%] items-center bg-blue-400 text-white text-sm rounded-md hover:scale-95 transition-all">
+            <IoIosPause />
+          </button>
+
+          <button className="w-[70%] h-[40%] items-center bg-blue-400 text-white text-sm rounded-md hover:scale-95 transition-all">
+            <IoPlayBackOutline />
+          </button>
+          <button className="w-[70%] h-[40%] items-center bg-blue-400 text-white text-sm rounded-md hover:scale-95 transition-all">
+            <IoPlayForwardOutline />
+          </button>
+          <button className="w-[70%] h-[40%] items-center bg-blue-400 text-white text-sm rounded-md hover:scale-95 transition-all">
+            <MdOutlineReplay />
+          </button>
+        </form>
       </div>
     </section>
   );

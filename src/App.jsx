@@ -7,8 +7,11 @@ import Code from "./components/Code";
 import { instSet } from "./shared/const";
 import { getInst, getOp, dec2bin, isLetter } from "./helpers/InstruccionParser";
 
+const worker = new Worker("./src/utils/emulador.js");
+
 function App() {
-  /* const [useCode, setCode] = useState([
+  const [probando, setProbando] = useState(1);
+  const [code, setCode] = useState([
     "STR 31",
     "SUB 31",
     "ADD 13",
@@ -24,7 +27,14 @@ function App() {
     "124",
     "11",
     "23",
-  ]); */
+  ]);
+
+  useEffect(() => {
+    worker.postMessage({ code: code });
+
+    worker.onmessage = function (message) {};
+  }, []);
+
   const BITSDEMEMORIA = 8;
   /* INSTRUCCIONES */
   const [useMenuActive, setMenuActive] = useState(false);
@@ -70,118 +80,6 @@ function App() {
   //Generra nuevvos campos de acumulador ESTO NO VA ACA
   /*  const camposAcumulador = new Array(8).fill("0");
   setAcumuladorReg(camposAcumulador); */
-
-  async function Probando() {
-    /* let mem = mem;
-  let pc = pc;
-  let ri = ri;
-  let acum = acum;
-  
-  let instSet = instSet; */
-
-    // Configuración
-    let name = "Peti";
-    let set = 3;
-    let kb = 5;
-    let k = 2 ** kb;
-
-    // Memoria
-    let tmm = k * (set + kb);
-    let maxMemAdr = k - 1;
-    let mem = new Array(tmm).fill(0); // Inicializa la memoria con ceros
-
-    // Registros
-    let pc = 0;
-    let ri = "";
-    let acum = 0;
-
-    const code = [
-      "STR 31",
-      "SUB 31",
-      "ADD 13",
-      "JUP 05",
-      "ADD 13",
-      "ADD 14",
-      "WRT 0",
-      "STP 0",
-      "WRT 0",
-      "STP 0",
-      "100",
-      "123",
-      "124",
-      "11",
-      "23",
-    ];
-
-    let op;
-    let probando = [];
-    for (let i = 0; i < code.length; i++) {
-      if (code[i].length == 0) continue;
-      let inst = getInst(code[i]);
-
-      if (!isLetter(code[i].substring(1))) {
-        inst = "STP";
-        op = code[i];
-      } else {
-        op = getOp(code[i]);
-      }
-
-      mem[i] = instSet[inst] + dec2bin(op);
-      //console.log(`${code[i]} => ${mem[i]}`);
-    }
-
-    // Run Code
-    // console.log("Ejecutando...");
-    for (let i = 0; i < code.length; i++) {
-      ri = mem[i];
-
-      pc = i + 1;
-      setCounterProgramReg(i + 1);
-
-      let inst = getInst(code[i]);
-      op = getOp(code[i]);
-
-      setCodigoOperandoReg(ri.split("").splice(0, 3));
-      setDireccioReg(ri.split("").splice(3));
-
-      /* CONVERTIR ACUMULADOR A BINARIO  */
-      let binaryString = acum.toString(2);
-      let paddedBinaryString = binaryString.padStart(8, "0");
-
-      setAcumuladorReg(paddedBinaryString.split(""));
-
-      console.log(`MA: ${i} | RI: ${ri} | PC: ${pc} | ACUM: ${acum}`);
-      switch (inst) {
-        case "STP":
-          break;
-        case "ADD":
-          acum = acum + parseInt(mem[op]);
-          break;
-        case "SUB":
-          acum = acum - parseInt(mem[op]);
-          break;
-        case "STR":
-          mem[op] = acum;
-          break;
-        case "JUP":
-          if (Math.sign(acum) >= 1) i = op - 1;
-          break;
-        case "JUN":
-          if (Math.sign(acum) < 0) i = op - 1;
-          break;
-        case "JUI":
-          i = op - 1;
-          break;
-        case "WRT":
-          setPrint(acum);
-          break;
-        default:
-          console.log("Instrucción inválida");
-          break;
-      }
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    }
-  }
 
   /* ACA VAMOS A USAR DIRECCIONAMIENTO */
 
@@ -277,7 +175,11 @@ function App() {
         </div>
       </section>
       <section className=" bg-gray-50 col-start-2 col-end-3 row-start-1 row-end-3  ">
-        <Code counterProgram={useCounterProgramReg} />
+        <Code
+          counterProgram={useCounterProgramReg}
+          setCounterProgram={setCounterProgramReg}
+          code={code}
+        />
       </section>
     </div>
   );
