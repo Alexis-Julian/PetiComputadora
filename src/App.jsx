@@ -1,5 +1,8 @@
 import { useState, useEffect, memo } from "react";
-import "./App.css";
+import RegistroInstruccion from "./components/RegistroInstruccion";
+import MemoriaPrincipal from "./components/MemoriaPrincipal";
+import Acumulador from "./components/Acumulador";
+import ContadorPrograma from "./components/ContadorPrograma";
 
 function App() {
   /* INSTRUCCIONES */
@@ -31,37 +34,37 @@ function App() {
   const TAMANO_MAXIMO =
     String(2 ** useDireccionamiento * usePalabraLogica) + " Bytes";
 
+  //Generra nuevvos campos de acumulador ESTO NO VA ACA
+  /*  const camposAcumulador = new Array(8).fill("0");
+  setAcumuladorReg(camposAcumulador); */
+
+  /* ACA VAMOS A USAR DIRECCIONAMIENTO */
+
+  /* CUANDO SE CAMBIA EL DIRECCIONAMIENTO HAY QUE CAMBIAR EL COONTADOR DE PROGRAMA Y MEMORIA PRINCIPAL  */
   useEffect(() => {
-    try {
-      //Modifiica la memoria principal
-      const resultado = 2 ** useDireccionamiento;
-      const memoriaArray = new Array(resultado).fill("00000000");
-      setTMM(memoriaArray);
+    //Modifiica la memoria principal
+    const resultado = 2 ** useDireccionamiento;
+    const memoriaArray = new Array(resultado).fill("00000000");
+    setTMM(memoriaArray);
 
-      //Genera nuevos campos de direccionamiento
-      const camposDirecccionamiento = new Array(useDireccionamiento).fill("0");
-      setDireccioReg(camposDirecccionamiento);
-
-      //Genera nuevos campos de counterProgram
-      const camposCounterProgram = new Array(useDireccionamiento).fill("0");
-      setCounterProgramReg(camposCounterProgram);
-
-      //Generra nuevvos campos de acumulador
-      const camposAcumulador = new Array(8).fill("0");
-      setAcumuladorReg(camposAcumulador);
-    } catch (error) {
-      console.log(error);
-    }
+    //Genera nuevos campos de direccionamiento
+    const camposDirecccionamiento = new Array(useDireccionamiento).fill("0");
+    setDireccioReg(camposDirecccionamiento);
+    console.log(camposDirecccionamiento);
+    //Genera nuevos campos de counterProgram
+    const camposCounterProgram = new Array(useDireccionamiento).fill("0");
+    setCounterProgramReg(camposCounterProgram);
   }, [useDireccionamiento]);
 
-  useEffect(() => {
+  /*  */
+  /* useEffect(() => {
     try {
       const operandoArray = new Array(useCodigoOperando).fill("0");
       setCodigoOperandoReg(operandoArray);
     } catch (error) {
       console.log(error);
     }
-  }, [useCodigoOperando]);
+  }, [useCodigoOperando]); */
 
   const MenuConfig = () => {
     return (
@@ -96,7 +99,7 @@ function App() {
             <input
               type="number"
               className="outline-none pl-1"
-              value={useCodigoOperando}
+              defaultValue={useCodigoOperando}
             />
           </label>
           <label
@@ -149,144 +152,22 @@ function App() {
     );
   };
 
-  const Register = () => {
-    const gridTemplateColumns = `repeat(${usePalabraLogica}, 1fr)`;
-    return (
-      <div
-        className={`relative w-[80%] h-[50px] text-xl border-black border-2   grid-rows-1 items-center  text-center`}
-        style={{ display: "grid", gridTemplateColumns }}
-      >
-        {/* VA IDENTIFICAR AL CODIGO DE OPERANDO */}
-        <div
-          className={` top-[100%] w-full absolute `}
-          style={{ display: "grid", gridTemplateColumns }}
-        >
-          <div
-            className={`text-sm border-black border-b mt-2 col-start-1  col-end-${parseInt(
-              useCodigoOperando + 1
-            )}`}
-          >
-            CODIGO OPERANDO
-          </div>
-        </div>
-
-        {/* CODIGO DE OPERANDO */}
-        {useCodigoOperandoReg.map((e) => {
-          return <i className="">{e}</i>;
-        })}
-
-        <div
-          className={` top-[100%] w-full absolute`}
-          style={{ display: "grid", gridTemplateColumns }}
-        >
-          <div
-            className={`mx-[8px] text-sm border-black border-b mt-2`}
-            style={{
-              gridColumnStart: parseInt(useDireccionamiento - 1),
-              gridColumnEnd: parseInt(
-                useDireccionamiento + useCodigoOperando + 1
-              ),
-            }}
-          >
-            CAMPO DE DIRECCIONAMIENTO
-          </div>
-        </div>
-
-        {/* CODIGO DE DIRECCIONAMIENTO */}
-        {usetDireccioReg.map((e) => {
-          return <i className="">{e}</i>;
-        })}
-      </div>
-    );
-  };
-
-  const RegisterMemory = ({ direcc, index }) => {
-    const arrayBit = direcc.split("");
-
-    return (
-      <li className="hover:bg-black/5 transition-all cursor-pointer text-2xl grid grid-cols-[0.2fr_1fr] justify-center items-center gap-2 w-full text-center h-[50px]">
-        <p className="border-r border-black/50">{index}</p>
-        <span className="h-full w-full flex items-center">
-          {arrayBit.map((e) => {
-            return <i className="flex-grow">{e}</i>;
-          })}
-        </span>
-      </li>
-    );
-  };
-
-  const CounterProgram = () => {
-    const gridTemplateColumns = `repeat(${useDireccionamiento}, 1fr)`;
-    return (
-      <div
-        className={`relative w-[80%] h-[50px] text-xl border-black border-2   grid-rows-1 items-center  text-center`}
-        style={{ display: "grid", gridTemplateColumns }}
-      >
-        <div
-          className={` top-[100%] w-full absolute`}
-          style={{ display: "grid", gridTemplateColumns }}
-        >
-          <div
-            className={`mx-[8px] text-sm border-black border-b mt-2`}
-            style={{
-              gridColumnStart: parseInt(1),
-              gridColumnEnd: parseInt(useDireccionamiento + 1),
-            }}
-          >
-            CONTADOR DE PROGRAMA
-          </div>
-        </div>
-
-        {/* CONTADOR DE PROGRAMA */}
-        {useCounterProgramReg.map((e) => {
-          return <i className="">{e}</i>;
-        })}
-      </div>
-    );
-  };
-
-  const Acumulador = () => {
-    const gridTemplateColumns = `repeat(8, 1fr)`;
-    return (
-      <div
-        className={`relative w-[80%] h-[50px] text-xl border-black border-2   grid-rows-1 items-center  text-center`}
-        style={{ display: "grid", gridTemplateColumns }}
-      >
-        <div
-          className={` top-[100%] w-full absolute`}
-          style={{ display: "grid", gridTemplateColumns }}
-        >
-          <div
-            className={`mx-[8px] text-sm border-black border-b mt-2`}
-            style={{
-              gridColumnStart: parseInt(1),
-              gridColumnEnd: parseInt(9),
-            }}
-          >
-            ACUMULADOR
-          </div>
-        </div>
-
-        {/* CONTADOR DE PROGRAMA */}
-        {useAcumuladorReg.map((e) => {
-          return <i className="">{e}</i>;
-        })}
-      </div>
-    );
-  };
-
   return (
-    <div className="h-screen w-screen p-2   bg-white  flex flex-col font-poppins ">
-      <section className="h-[10%] px-1 w-full ">
-        <ChangePComputer />
+    <div className="h-screen w-screen gap-2  overflow-scroll grid grid-rows-[0.2fr_1fr]  grid-cols-[1fr_0.2fr]  p-2      font-poppins  ">
+      <section className=" w-full bg-gray-50 rounded-md  ">
+        1{/* <ChangePComputer /> */}
       </section>
-      <section className="grid grid-rows-[1fr_0.3fr] grid-cols-2 h-[90%]">
+
+      <section
+        className=" bg-gray-50
+       overflow-hidden rounded-md  col-start-1 grid grid-rows-[1fr_0.3fr] grid-cols-2 h-[90%]"
+      >
         {/* MEMORIA PRINCIPAL  */}
         <ul className="border-[1px] border-black m-1 col overflow-y-scroll  overflow-hidden">
           {useTMM.map((e, index) => {
             return (
               <div key={index}>
-                <RegisterMemory direcc={e} index={index} />
+                <MemoriaPrincipal direcc={e} index={index} />
               </div>
             );
           })}
@@ -296,30 +177,50 @@ function App() {
         <div className="border-[1px] border-black m-1 grid grid-rows-3 items-center  ">
           {/* REGISTRO PRINCIPAL */}
           <div className="w-full  flex items-center justify-center">
-            <Register />
+            <RegistroInstruccion
+              k={useDireccionamiento}
+              pw={usePalabraLogica}
+              set={useCodigoOperando}
+            />
           </div>
           {/* REGISTRO ACUMULADOR */}
           <div className="w-full  flex items-center justify-center">
             <Acumulador />
           </div>
+
           <div className="w-full  flex items-center justify-center">
             {/* CONTADOR DE PROGRAMA  */}
-            <CounterProgram />
+            <ContadorPrograma
+              k={useDireccionamiento}
+              pw={usePalabraLogica}
+              set={useCodigoOperando}
+            />
           </div>
         </div>
 
         {/* ARITMETICA */}
-        <div className="border-[1px] border-black m-1 row-start-2 row-end-3 col-start-1 col-end-3">
-          ARITMETICA
+        <div className="grid grid-cols-3   border-black m-1 row-start-2 row-end-3 col-start-1 col-end-3">
+          <section className="rounded-sm bg-blue-50  relative">
+            {/* <p className="absolute ">ARITMETICA</p> */}
+
+            <p className="absolute top-0 left-0 text-black/50 text-md">
+              Aritmetica
+            </p>
+          </section>
+          <div className="bg-transparent"></div>
+          <section className="relative rounded-sm bg-blue-50  text-center flex items-center justify-center text-2xl">
+            <p>5</p>
+            <p className="absolute top-0 left-0 text-black/50 text-sm ">
+              Pantalla
+            </p>
+          </section>
         </div>
+
+        {/* MENU CONFIG */}
+        {/* <section className="absolute bg-black/80 right-0 top-0  w-[20%] h-[100%]  ">
+          <MenuConfig />
+        </section> */}
       </section>
-      <div
-        className={`absolute bg-black/80 right-0 top-0 h-[100%] w-[35%] transition-all translate-x-[${
-          useMenuActive ? "0" : "100%"
-        }]`}
-      >
-        <MenuConfig />
-      </div>
     </div>
   );
 }
