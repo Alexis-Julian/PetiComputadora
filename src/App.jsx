@@ -67,22 +67,31 @@ function App() {
   }, [useCodigoOperando]); */
 
   const MenuConfig = () => {
+    const codigo = new Array(16).fill("");
+    console.log(codigo);
     return (
-      <section className="size-full">
-        <div className="size-8  cursor-pointer h-[10%] w-full p-2">
-          <button
-            className="bg-white/90  border-[1px] size-full rounded-sm hover:bg-white transition-all"
-            onClick={() => setMenuActive(!useMenuActive)}
-          >
-            CERRAR
-          </button>
-        </div>
-        <ul>
-          <li>1</li>
-          <li>2</li>
-          <li>3</li>
-          <li>4</li>
+      <section className="p-2 size-full grid grid-rows-[0.1fr_1fr_0.2fr]">
+        <h3 className=" bg-blue-50 rounded-md text-center text-2xl flex items-center justify-center">
+          <p>ASSEMBLY</p>
+        </h3>
+
+        <ul className="flex flex-col gap-2 items-center p-2 overflow-y-auto">
+          {codigo.map((e) => {
+            return (
+              <li className="w-full flex gap-1">
+                <input
+                  className="outline-none w-[80%]"
+                  type="text"
+                  name=""
+                  id=""
+                />
+                <input className="outline-none h-[40px]" type="text" />
+              </li>
+            );
+          })}
         </ul>
+
+        <div className=" bg-blue-50 rounded-md">BOTONES</div>
       </section>
     );
   };
@@ -159,8 +168,8 @@ function App() {
       </section>
 
       <section
-        className=" bg-gray-50
-       overflow-hidden rounded-md  col-start-1 grid grid-rows-[1fr_0.3fr] grid-cols-2 h-[90%]"
+        className="  bg-gray-50
+       overflow-hidden rounded-md  col-start-1 grid grid-rows-[1fr_0.3fr] grid-cols-2 "
       >
         {/* MEMORIA PRINCIPAL  */}
         <ul className="border-[1px] border-black m-1 col overflow-y-scroll  overflow-hidden">
@@ -215,11 +224,9 @@ function App() {
             </p>
           </section>
         </div>
-
-        {/* MENU CONFIG */}
-        {/* <section className="absolute bg-black/80 right-0 top-0  w-[20%] h-[100%]  ">
-          <MenuConfig />
-        </section> */}
+      </section>
+      <section className=" bg-gray-50 col-start-2 col-end-3 row-start-1 row-end-3  ">
+        <MenuConfig />
       </section>
     </div>
   );
