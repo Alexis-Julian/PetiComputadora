@@ -4,11 +4,7 @@ import MemoriaPrincipal from "./components/MemoriaPrincipal";
 import Acumulador from "./components/Acumulador";
 import ContadorPrograma from "./components/ContadorPrograma";
 import Code from "./components/Code";
-<<<<<<< HEAD
-
-=======
 import { getOp, getInst, dec2bin } from "./helpers/InstruccionParser";
->>>>>>> worker_test
 const worker = new Worker("./src/utils/emulador.js");
 
 function App() {
@@ -32,15 +28,8 @@ function App() {
 
   /*EL VALOR NULL CAMBIA CUANDO EL WORKER EMPIEZA A DEVOLVER LOS VALORES A SUS RESPECTIVOS VALORES   */
 
-<<<<<<< HEAD
-    worker.onmessage = function ({ data }) {
-      console.log(data);
-    };
-  }, []);
-=======
   /* TAMAÑO MAXIMO DE MEMORIA */
   const [useTMM, setTMM] = useState(null);
->>>>>>> worker_test
 
   /* DISPLAY */
   const [useDisplay, setDisplay] = useState(null);
@@ -60,8 +49,6 @@ function App() {
   /* ISReady */
   const [useIsReady, setIsReady] = useState(false);
 
-<<<<<<< HEAD
-=======
   useEffect(() => {
     worker.postMessage({
       Type: "Init",
@@ -168,7 +155,6 @@ function App() {
     );
   };
 
->>>>>>> worker_test
   return (
     <div className="h-screen w-screen gap-2  overflow-scroll grid grid-rows-[0.2fr_1fr]  grid-cols-[1fr_0.2fr]  p-2">
       {useIsReady ? <ViewPetiComputadora /> : <Loading />}
