@@ -8,7 +8,7 @@ let Comp = {
     name: "Peti", // Nombre de la computadora
     set: 3, // Bits del Set de Instrucciones
     kb: 5, // Bits de la Capacidad de direccionamiento
-    k: 2 ** Comp.kb, // Capacidad de direccionamiento
+    k: 0, // Capacidad de direccionamiento (se calcula después)
     numOps: 1, // Número de operandos
     reg : { // Registros
         pc: 0, // Contador de Programa
@@ -16,11 +16,15 @@ let Comp = {
         acum: 0 // Acumulador
     },
     mem: { // Memoria
-        tmm: Comp.k * (Comp.set + (Comp.kb * Comp.numOps)), // Tamaño Máx. de Memoria
-        maxMemAdr: Comp.k - 1, // Dirección Máxima de Memoria
-        memMap: new Array(Comp.mem.tmm).fill(0), // Inicializar toda la memoria a 0
+        tmm: 0, // Tamaño Máx. de Memoria (se calcula después)
+        maxMemAdr: 0, // Dirección Máxima de Memoria (se calcula después)
+        memMap: [] // Mapa de Memoria (se inicializa toda la memoria a 0 después)
     }
 }
+Comp.k = 2 ** Comp.kb;
+Comp.mem.tmm = Comp.k * (Comp.set + (Comp.kb * Comp.numOps));
+Comp.mem.maxMemAdr = Comp.k - 1;
+Comp.mem.memMap = new Array(Comp.mem.tmm).fill(0);
 
 let execTime = 1000;
 let code;
