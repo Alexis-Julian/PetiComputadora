@@ -30,7 +30,10 @@ function App() {
   ]);
 
   useEffect(() => {
-    worker.postMessage({ code: code });
+    worker.postMessage({ 
+        Type: "Init",
+        Code: code }
+    );
 
     worker.onmessage = function (message) {};
   }, []);
