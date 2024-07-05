@@ -1,13 +1,14 @@
 export default function RegistroInstruccion({
-  k,
-  pw,
-  set,
   registerDirecc,
   registerOperand,
 }) {
-  const gridTemplateColumns = `repeat(${pw}, 1fr)`;
-  //console.log(registerDirecc, "DIRECCION");
-  //console.log(registerOperand, "OPERANDO");
+  let k = 5;
+  let set = 3;
+  //let pw = k + set;
+
+  /* PONER LA CAPACIDAD DE DIRECCIONAMIENTO(K) : PALABRA LOGICA(pw) : SET(set) : para hacer dinamica la funcion */
+  const gridTemplateColumns = `repeat(8, 1fr)`;
+
   return (
     <div
       className={`relative w-[80%] h-[50px] text-xl border-black border-2   grid-rows-1 items-center  text-center`}

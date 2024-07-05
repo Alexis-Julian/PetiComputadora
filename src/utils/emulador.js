@@ -135,14 +135,16 @@ function compilar() {
 async function run() {
   console.log("Ejecutando...");
   for (let i = 0; i < code.length; i++) {
+    if (state == STATE.Stop) break;
+
     Comp.reg.ri = Comp.mem.memMap[i];
     Comp.reg.pc = i + 1;
     let inst = getInst(code[i]);
     let op = getOp(code[i]);
     this.postMessage({ RI: Comp.reg.ri, PC: Comp.reg.pc, ACUM: Comp.reg.acum });
-    /*  console.log(
+    console.log(
       `MA: ${i} | RI: ${Comp.reg.ri} | PC: ${Comp.reg.pc} | ACUM: ${Comp.reg.acum}`
-    ); */
+    );
     evalExec(inst, op, i);
     await new Promise((resolve) => setTimeout(resolve, execTime));
   }
@@ -155,10 +157,12 @@ function evalExec(inst, op, i) {
       state = STATE.Stop;
       break;
     case "ADD":
-      Comp.reg.acum = Comp.reg.acum + parseInt(Comp.mem.memMap[op]);
+      Comp.reg.acum =
+        parseInt(Comp.reg.acum) + parseInt(Comp.mem.memMap[op], 2);
       break;
     case "SUB":
-      Comp.reg.acum = Comp.reg.acum - parseInt(Comp.mem.memMap[op]);
+      Comp.reg.acum =
+        parseInt(Comp.reg.acum) - parseInt(Comp.mem.memMap[op], 2);
       break;
     case "STR":
       Comp.mem.memMap[op] = Comp.reg.acum;
@@ -183,7 +187,7 @@ function evalExec(inst, op, i) {
 }
 
 function dec2bin(v) {
-  let n = v.toString(2);
+  let n = parseInt(v).toString(2);
   let z = "0".repeat(Comp.kb);
   return z.substring(n.length) + n;
 }

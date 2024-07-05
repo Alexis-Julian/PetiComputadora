@@ -13,7 +13,7 @@ export function isLetter(c) {
 export function dec2bin(v) {
   let kb = 8;
   //let k = 2 ** kb;
-  let n = v.toString(2);
+  let n = parseInt(v).toString(2);
   let z = "0".repeat(kb);
   return z.substring(n.length) + n;
 }

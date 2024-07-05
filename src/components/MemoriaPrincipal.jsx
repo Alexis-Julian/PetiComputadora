@@ -17,7 +17,9 @@ export default function MemoriaPrincipal({ direcc, index, cp }) {
           );
         })}
       </span>
-      <p className="border-l border-black/50">1</p>
+      <p className="border-l border-black/50 text-[1.3rem]">
+        {parseInt(direcc, 2)}
+      </p>
     </li>
   );
 }

@@ -1,7 +1,10 @@
-export default function ContadorPrograma({ k, pw, set }) {
+export default function ContadorPrograma({ tmm, cp }) {
+  //const k = 5;
+  //const set = 3;
+  const pw = 8;
   const gridTemplateColumns = `repeat(${pw}, 1fr)`;
 
-  const contadorPrograma = new Array(pw).fill("0");
+  const contadorPrograma = String(tmm[cp]).split("");
 
   return (
     <div
