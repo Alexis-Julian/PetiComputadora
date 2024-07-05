@@ -1,4 +1,6 @@
-export default function ContadorPrograma({ tmm, cp }) {
+import propTypes from "prop-types";
+
+function ContadorPrograma({ tmm, cp }) {
   //const k = 5;
   //const set = 3;
   const pw = 8;
@@ -37,3 +39,9 @@ export default function ContadorPrograma({ tmm, cp }) {
     </div>
   );
 }
+
+ContadorPrograma.propTypes = {
+  tmm: propTypes.array,
+  cp: propTypes.oneOfType([propTypes.number, propTypes.string]),
+};
+export default ContadorPrograma;

@@ -145,11 +145,7 @@ function App() {
           </div>
         </section>
         <section className=" bg-gray-50 col-start-2 col-end-3 row-start-1 row-end-3  ">
-          <Code
-            counterProgram={useCounterProgram}
-            setCounterProgram={setCounterProgram}
-            code={code}
-          />
+          <Code counterProgram={useCounterProgram} code={code} />
         </section>
       </>
     );

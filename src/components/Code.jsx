@@ -1,14 +1,12 @@
 import { getInst, getOp, isLetter } from "../helpers/InstruccionParser";
-import { CiPlay1 } from "react-icons/ci";
 import { IoPlayBackOutline } from "react-icons/io5";
 import { IoPlayForwardOutline } from "react-icons/io5";
 import { IoIosPause } from "react-icons/io";
 import { IoPlay } from "react-icons/io5";
 import { MdOutlineReplay } from "react-icons/md";
+import propTypes from "prop-types";
 
-function Instruccion(registro) {}
-
-export default function Code({ counterProgram, setCounterProgram, code }) {
+function Code({ counterProgram, code }) {
   return (
     <section className="p-2 size-full grid grid-rows-[0.1fr_1fr_0.1fr] ">
       <h3 className=" border-b-[1px] border-b-black/5  text-center text-2xl flex items-center justify-center">
@@ -24,6 +22,7 @@ export default function Code({ counterProgram, setCounterProgram, code }) {
           return (
             <li
               className={`relative w-full flex gap-1 border-b-2  border-b-black items-center`}
+              key={index}
             >
               <div
                 className={`absolute right-0 size-4 ${
@@ -73,3 +72,9 @@ export default function Code({ counterProgram, setCounterProgram, code }) {
     </section>
   );
 }
+
+Code.propTypes = {
+  counterProgram: propTypes.oneOfType([propTypes.number, propTypes.string]),
+  code: propTypes.array,
+};
+export default Code;

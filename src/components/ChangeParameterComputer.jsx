@@ -1,4 +1,6 @@
-export default function ChangeParameterComputer() {
+import propTypes from "prop-types";
+
+function ChangeParameterComputer() {
   return (
     <div className="border-black border-[1px] h-full rounded-sm">
       <form className="w-full h-full grid grid-cols-3 grid-rows-2 items-center px-1">
@@ -62,3 +64,6 @@ export default function ChangeParameterComputer() {
     </div>
   );
 }
+
+ChangeParameterComputer.propTypes = {};
+export default ChangeParameterComputer;

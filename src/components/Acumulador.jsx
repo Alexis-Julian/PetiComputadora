@@ -1,6 +1,6 @@
-import { dec2bin } from "../helpers/InstruccionParser";
+import propTypes from "prop-types";
 
-export default function Acumulador({ acum }) {
+function Acumulador({ acum }) {
   const gridTemplateColumns = `repeat(8, 1fr)`;
 
   return (
@@ -38,3 +38,9 @@ export default function Acumulador({ acum }) {
     </div>
   );
 }
+
+Acumulador.propTypes = {
+  acum: propTypes.array.isRequired,
+};
+
+export default Acumulador;

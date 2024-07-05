@@ -1,4 +1,5 @@
-export default function MemoriaPrincipal({ direcc, index, cp }) {
+import propTypes from "prop-types";
+function MemoriaPrincipal({ direcc, index, cp }) {
   const arrayBit = direcc.split("");
 
   return (
@@ -23,3 +24,10 @@ export default function MemoriaPrincipal({ direcc, index, cp }) {
     </li>
   );
 }
+
+MemoriaPrincipal.propTypes = {
+  direcc: propTypes.array,
+  index: propTypes.number,
+  cp: propTypes.oneOfType([propTypes.number, propTypes.string]),
+};
+export default MemoriaPrincipal;

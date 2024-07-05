@@ -1,7 +1,6 @@
-export default function RegistroInstruccion({
-  registerDirecc,
-  registerOperand,
-}) {
+import propTypes from "prop-types";
+
+function RegistroInstruccion({ registerDirecc, registerOperand }) {
   let k = 5;
   let set = 3;
   //let pw = k + set;
@@ -63,3 +62,9 @@ export default function RegistroInstruccion({
     </div>
   );
 }
+
+RegistroInstruccion.propTypes = {
+  registerDirecc: propTypes.array,
+  registerOperand: propTypes.array,
+};
+export default RegistroInstruccion;
