@@ -1,11 +1,9 @@
-import { useState, useEffect, memo } from "react";
+import { useState, useEffect } from "react";
 import RegistroInstruccion from "./components/RegistroInstruccion";
 import MemoriaPrincipal from "./components/MemoriaPrincipal";
 import Acumulador from "./components/Acumulador";
 import ContadorPrograma from "./components/ContadorPrograma";
 import Code from "./components/Code";
-import { instSet } from "./shared/const";
-import { getInst, getOp, dec2bin, isLetter } from "./helpers/InstruccionParser";
 
 const worker = new Worker("./src/utils/emulador.js");
 
@@ -30,10 +28,10 @@ function App() {
   ]);
 
   useEffect(() => {
-    worker.postMessage({ 
-        Type: "Init",
-        Code: code }
-    );
+    worker.postMessage({
+      Type: "Init",
+      Code: code,
+    });
 
     worker.onmessage = function (message) {};
   }, []);
@@ -92,13 +90,6 @@ function App() {
     const resultado = 2 ** useDireccionamiento;
     const memoriaArray = new Array(resultado).fill("00000000");
     setTMM(memoriaArray);
-  }, []);
-
-  useEffect(() => {
-    const Asyncroia = async () => {
-      await Probando();
-    };
-    Asyncroia();
   }, []);
 
   /*  */
