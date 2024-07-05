@@ -4,8 +4,6 @@ import MemoriaPrincipal from "./components/MemoriaPrincipal";
 import Acumulador from "./components/Acumulador";
 import ContadorPrograma from "./components/ContadorPrograma";
 import Code from "./components/Code";
-import { instSet } from "./shared/const";
-import { getInst, getOp, dec2bin, isLetter } from "./helpers/InstruccionParser";
 
 const worker = new Worker("./src/utils/emulador.js");
 
@@ -32,7 +30,9 @@ function App() {
   useEffect(() => {
     worker.postMessage({ code: code });
 
-    worker.onmessage = function (message) {};
+    worker.onmessage = function ({ data }) {
+      console.log(data);
+    };
   }, []);
 
   const BITSDEMEMORIA = 8;
@@ -90,23 +90,6 @@ function App() {
     const memoriaArray = new Array(resultado).fill("00000000");
     setTMM(memoriaArray);
   }, []);
-
-  useEffect(() => {
-    const Asyncroia = async () => {
-      await Probando();
-    };
-    Asyncroia();
-  }, []);
-
-  /*  */
-  /* useEffect(() => {
-    try {
-      const operandoArray = new Array(useCodigoOperando).fill("0");
-      setCodigoOperandoReg(operandoArray);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [useCodigoOperando]); */
 
   return (
     <div className="h-screen w-screen gap-2  overflow-scroll grid grid-rows-[0.2fr_1fr]  grid-cols-[1fr_0.2fr]  p-2      font-poppins  ">
