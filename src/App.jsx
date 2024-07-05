@@ -4,11 +4,10 @@ import MemoriaPrincipal from "./components/MemoriaPrincipal";
 import Acumulador from "./components/Acumulador";
 import ContadorPrograma from "./components/ContadorPrograma";
 import Code from "./components/Code";
-
+import { getOp, getInst, dec2bin } from "./helpers/InstruccionParser";
 const worker = new Worker("./src/utils/emulador.js");
 
 function App() {
-  const [probando, setProbando] = useState(1);
   const [code, setCode] = useState([
     "STR 31",
     "SUB 31",
@@ -26,15 +25,6 @@ function App() {
     "11",
     "23",
   ]);
-
-  useEffect(() => {
-    worker.postMessage({
-      Type: "Init",
-      Code: code,
-    });
-
-    worker.onmessage = function (message) {};
-  }, []);
 
   const BITSDEMEMORIA = 8;
   /* INSTRUCCIONES */
@@ -72,9 +62,6 @@ function App() {
   /* REGISTRO DE PROGRAM COUNTER */
   const [useCounterProgramReg, setCounterProgramReg] = useState(0);
 
-  /* IMPRIMIR EN PANTALLA  */
-  const [usePrint, setPrint] = useState();
-
   const TAMANO_MAXIMO =
     String(2 ** useDireccionamiento * usePalabraLogica) + " Bytes";
 
@@ -82,7 +69,25 @@ function App() {
   /*  const camposAcumulador = new Array(8).fill("0");
   setAcumuladorReg(camposAcumulador); */
 
-  /* ACA VAMOS A USAR DIRECCIONAMIENTO */
+  useEffect(() => {
+    worker.postMessage({
+      Type: "Init",
+      Code: code,
+    });
+
+    worker.onmessage = function ({ data }) {
+      if (data.Mem) {
+        setTMM(data.Mem);
+      }
+
+      if (data.RI) {
+        setCodigoOperandoReg(getInst(data.RI).split(""));
+        setDireccioReg(getOp(data.RI).split(""));
+        setCounterProgramReg(data.PC);
+        setAcumuladorReg(String(dec2bin(data.ACUM)).split(""));
+      }
+    };
+  }, [code]);
 
   /* CUANDO SE CAMBIA EL DIRECCIONAMIENTO HAY QUE CAMBIAR EL COONTADOR DE PROGRAMA Y MEMORIA PRINCIPAL  */
   useEffect(() => {
@@ -92,18 +97,8 @@ function App() {
     setTMM(memoriaArray);
   }, []);
 
-  /*  */
-  /* useEffect(() => {
-    try {
-      const operandoArray = new Array(useCodigoOperando).fill("0");
-      setCodigoOperandoReg(operandoArray);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [useCodigoOperando]); */
-
   return (
-    <div className="h-screen w-screen gap-2  overflow-scroll grid grid-rows-[0.2fr_1fr]  grid-cols-[1fr_0.2fr]  p-2      font-poppins  ">
+    <div className="h-screen w-screen gap-2  overflow-scroll grid grid-rows-[0.2fr_1fr]  grid-cols-[1fr_0.2fr]  p-2        ">
       <section className=" w-full bg-gray-50 rounded-md  ">
         1{/* <ChangePComputer /> */}
       </section>
@@ -117,7 +112,11 @@ function App() {
           {useTMM.map((e, index) => {
             return (
               <div key={index}>
-                <MemoriaPrincipal direcc={e} index={index} />
+                <MemoriaPrincipal
+                  direcc={e}
+                  index={index}
+                  cp={useCounterProgramReg}
+                />
               </div>
             );
           })}
@@ -161,7 +160,7 @@ function App() {
           </section>
           <div className="bg-transparent"></div>
           <section className="relative rounded-sm bg-blue-50  text-center flex items-center justify-center text-2xl">
-            <p>{usePrint ? usePrint : "Sin vista"}</p>
+            {/* <p>{usePrint ? usePrint : "Sin vista"}</p> */}
             <p className="absolute top-0 left-0 text-black/50 text-sm ">
               Pantalla
             </p>

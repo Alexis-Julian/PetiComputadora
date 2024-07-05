@@ -30,7 +30,7 @@ let Comp = {
   name: "Peti", // Nombre de la computadora
   set: 3, // Bits del Set de Instrucciones
   kb: 5, // Bits de la Capacidad de direccionamiento
-  k: 2 ** Comp.kb, // Capacidad de direccionamiento
+  k: 0, // Capacidad de direccionamiento (se calcula después)
   numOps: 1, // Número de operandos
   reg: {
     // Registros
@@ -40,13 +40,17 @@ let Comp = {
   },
   mem: {
     // Memoria
-    tmm: Comp.k * (Comp.set + Comp.kb * Comp.numOps), // Tamaño Máx. de Memoria
-    maxMemAdr: Comp.k - 1, // Dirección Máxima de Memoria
-    memMap: new Array(Comp.mem.tmm).fill(0), // Inicializar toda la memoria a 0
+    tmm: 0, // Tamaño Máx. de Memoria (se calcula después)
+    maxMemAdr: 0, // Dirección Máxima de Memoria (se calcula después)
+    memMap: [], // Mapa de Memoria (se inicializa toda la memoria a 0 después)
   },
 };
+Comp.k = 2 ** Comp.kb;
+Comp.mem.tmm = Comp.k * (Comp.set + Comp.kb * Comp.numOps);
+Comp.mem.maxMemAdr = Comp.k - 1;
+Comp.mem.memMap = new Array(Comp.mem.maxMemAdr + 1).fill("00000000");
 
-let execTime = 1000;
+let execTime = 5000;
 let code;
 
 const STATE = {
@@ -102,11 +106,11 @@ onmessage = async function (event) {
 };
 
 function init() {
-  console.log("Mini Emulador");
+  /* console.log("Mini Emulador");
   console.log(`Computadora: ${Comp.name}`);
   console.log(`Set de Instrucción: ${2 ** Comp.set}`);
   console.log(`Capacidad de direccionamiento: ${Comp.k}`);
-  console.log(`Tamaño Máx. de Memoria: ${Comp.mem.tmm}`);
+  console.log(`Tamaño Máx. de Memoria: ${Comp.mem.tmm}`); */
 }
 
 function compilar() {
@@ -124,7 +128,7 @@ function compilar() {
       op = getOp(code[i]);
     }
     Comp.mem.memMap[i] = instSet[inst] + dec2bin(op);
-    console.log(`${code[i]} => ${Comp.mem.memMap[i]}`);
+    //console.log(`${code[i]} => ${Comp.mem.memMap[i]}`);
   }
 }
 
@@ -136,9 +140,9 @@ async function run() {
     let inst = getInst(code[i]);
     let op = getOp(code[i]);
     this.postMessage({ RI: Comp.reg.ri, PC: Comp.reg.pc, ACUM: Comp.reg.acum });
-    console.log(
+    /*  console.log(
       `MA: ${i} | RI: ${Comp.reg.ri} | PC: ${Comp.reg.pc} | ACUM: ${Comp.reg.acum}`
-    );
+    ); */
     evalExec(inst, op, i);
     await new Promise((resolve) => setTimeout(resolve, execTime));
   }
