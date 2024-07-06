@@ -66,4 +66,5 @@ function ChangeParameterComputer() {
 }
 
 ChangeParameterComputer.propTypes = {};
+
 export default ChangeParameterComputer;

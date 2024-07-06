@@ -31,7 +31,7 @@ function Acumulador({ acum }) {
           </i>
         );
       })}
-
+      {/*  */}
       <div className="absolute -right-12 h-[50px] flex items-center border-b-2 border-black/15 ">
         {parseInt(acum.join(""), 2)}
       </div>

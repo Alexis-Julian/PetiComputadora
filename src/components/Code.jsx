@@ -5,6 +5,8 @@ import { IoIosPause } from "react-icons/io";
 import { IoPlay } from "react-icons/io5";
 import { MdOutlineReplay } from "react-icons/md";
 import propTypes from "prop-types";
+import ResponsiveInput from "./ResponsiveInput";
+import ResponsiveParagraph from "./ResponsiveParagraph";
 
 function Code({ counterProgram, code }) {
   return (
@@ -21,28 +23,26 @@ function Code({ counterProgram, code }) {
 
           return (
             <li
-              className={`relative w-full flex gap-1 border-b-2  border-b-black items-center`}
+              className={`relative w-full grid grid-cols-4 gap-1 items-center justify-center border-b border-black/25 place-items-center  `}
               key={index}
             >
               <div
-                className={`absolute right-0 size-4 ${
+                className={`size-4 ${
                   counterProgram - 1 == index ? "bg-red-500/50" : "bg-red-500/5"
                 }  rounded-[50%]`}
               ></div>
-              <p className="w-[10%]">{index} :</p>
-              <input
-                className="outline-none h-[40px] w-[20%] bg-transparent text-center cursor-default"
-                type="text"
-                defaultValue={isLetter(inst) ? inst : "VAL"}
-                readOnly
+
+              <ResponsiveParagraph>{index}</ResponsiveParagraph>
+
+              <ResponsiveInput
+                style={"bg-transparent border-none outline-none"}
+                readOnly={true}
+                value={isLetter(inst) ? inst : "VAL"}
               />
-              <input
-                readOnly
-                className="outline-none w-[70%] bg-transparent cursor-default"
-                type="text"
-                defaultValue={isNaN(op) ? inst : op}
-                name=""
-                id=""
+              <ResponsiveInput
+                style={"bg-transparent border-none outline-none"}
+                readOnly={true}
+                value={isNaN(op) ? inst : op}
               />
             </li>
           );
