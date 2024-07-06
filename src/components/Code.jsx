@@ -37,7 +37,7 @@ function Code({ counterProgram, code }) {
               <ResponsiveInput
                 style={"bg-transparent border-none outline-none"}
                 readOnly={true}
-                value={isLetter(inst) ? inst : "VAL"}
+                value={inst}
               />
               <ResponsiveInput
                 style={"bg-transparent border-none outline-none"}

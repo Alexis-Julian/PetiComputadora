@@ -12,10 +12,24 @@ export function isLetter(c) {
 
 export function dec2bin(v) {
   let kb = 8;
-  //let k = 2 ** kb;
-  let n = parseInt(v).toString(2);
-  let z = "0".repeat(kb);
-  return z.substring(n.length) + n;
+  let b;
+  if (v >= 0) {
+    b = parseInt(v).toString(2).padStart(kb, '0')
+  } else {
+    b = (v + ((2**kb))).toString(2).slice(-kb)
+  }
+  return b;
+}
+
+export function bin2dec(v, s = false) {
+    let n = 0;
+    if (s) {
+        n = parseInt(v, 2) << 24 >> 24;
+    } else {
+        n = parseInt(v, 2);
+    }
+    //console.log(`v=${v} => n=${n}`);
+    return n
 }
 
 export function soloNumeros(cadena) {

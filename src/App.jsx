@@ -11,10 +11,12 @@ function App() {
   const [code, setCode] = useState([
     "STR 31",
     "SUB 31",
-    "ADD 13",
+    "ADD 16",
     "JUP 05",
-    "ADD 13",
-    "ADD 14",
+    "ADD 16",
+    "WRT 0",
+    "SUB 15",
+    "JUN 04",
     "WRT 0",
     "STP 0",
     "WRT 0",
@@ -22,8 +24,8 @@ function App() {
     "100",
     "123",
     "124",
-    "11",
-    "23",
+    "10",
+    "5",
   ]);
 
   /*EL VALOR NULL CAMBIA CUANDO EL WORKER EMPIEZA A DEVOLVER LOS VALORES A SUS RESPECTIVOS VALORES   */

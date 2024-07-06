@@ -1,4 +1,5 @@
 import propTypes from "prop-types";
+import { bin2dec } from "../helpers/InstruccionParser.js";
 
 function Acumulador({ acum }) {
   const gridTemplateColumns = `repeat(8, 1fr)`;
@@ -33,7 +34,7 @@ function Acumulador({ acum }) {
       })}
       {/*  */}
       <div className="absolute -right-12 h-[50px] flex items-center border-b-2 border-black/15 ">
-        {parseInt(acum.join(""), 2)}
+        {bin2dec(acum.join(""), true)}
       </div>
     </div>
   );

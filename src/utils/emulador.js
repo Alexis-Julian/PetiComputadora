@@ -16,7 +16,7 @@ self.importScripts(`./defs/${compu}-def.js`);
 // eslint-disable-next-line no-undef
 let C = Comp;
 
-let execTime = 500;
+let execTime = 100;
 let code;
 
 /*
@@ -116,9 +116,13 @@ async function run() {
  * @returns {string} Valor convertido a binario
  */
 function dec2bin(v, s = C.ws) {
-    let n = parseInt(v).toString(2);
-    let z = "0".repeat(s);
-    return z.substring(n.length) + n;
+    let b;
+    if (v >= 0) {
+        b = parseInt(v).toString(2).padStart(s, '0')
+    } else {
+        b = (v + ((2 ** s))).toString(2).slice(-s)
+    }
+    return b;
 }
 
 function getInst(s) {

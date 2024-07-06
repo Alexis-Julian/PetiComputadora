@@ -49,12 +49,10 @@ function evalExec(inst, op) {
             state = STATE.Stop;
             break;
         case "ADD":
-            Comp.reg.acum =
-                parseInt(Comp.reg.acum) + parseInt(Comp.mem.memMap[op], 2);
+            Comp.reg.acum = (parseInt(Comp.reg.acum) + bin2dec(Comp.mem.memMap[op], true)) % (2 ** (Comp.ws - 1));
             break;
         case "SUB":
-            Comp.reg.acum =
-                parseInt(Comp.reg.acum) - parseInt(Comp.mem.memMap[op], 2);
+            Comp.reg.acum = (parseInt(Comp.reg.acum) - bin2dec(Comp.mem.memMap[op], true)) % (2 ** (Comp.ws - 1));
             break;
         case "STR":
             Comp.mem.memMap[op] = Comp.reg.acum;
@@ -63,6 +61,7 @@ function evalExec(inst, op) {
             if (Math.sign(Comp.reg.acum) >= 1) ma = op - 1;
             break;
         case "JUN":
+            console.log(`acum=${Comp.reg.acum} => |${Math.sign(Comp.reg.acum)}|`);
             if (Math.sign(Comp.reg.acum) < 0) ma = op - 1;
             break;
         case "JUI":
@@ -77,4 +76,14 @@ function evalExec(inst, op) {
             break;
     }
     return ma;
+}
+
+function bin2dec(v, s = false) {
+    let n = 0;
+    if (s) {
+        n = parseInt(v, 2) << 24 >> 24;
+    } else {
+        n = parseInt(v, 2);
+    }
+    return n
 }

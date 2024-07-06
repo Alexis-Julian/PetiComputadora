@@ -1,4 +1,6 @@
 import propTypes from "prop-types";
+import { bin2dec } from "../helpers/InstruccionParser.js";
+
 function MemoriaPrincipal({ direcc, index, cp }) {
   const arrayBit = direcc.split("");
 
@@ -19,7 +21,7 @@ function MemoriaPrincipal({ direcc, index, cp }) {
         })}
       </span>
       <p className="border-l border-black/50 text-[1.3rem]">
-        {parseInt(direcc, 2)}
+        {bin2dec(direcc, true)}
       </p>
     </li>
   );
